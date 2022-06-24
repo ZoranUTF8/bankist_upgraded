@@ -51,19 +51,32 @@ document
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%';
 
-//? Smooth scrolgitling
+//? Smooth scroling
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
 btnScrollTo.addEventListener('click', e => {
-  const s1Coordinates = section1.getBoundingClientRect();
-
-  // window.scrollTo({
-  //   left: s1Coordinates.left + window.pageXOffset,
-  //   top: s1Coordinates.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
-
   section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+//? Smooth scrolling for nav links
+//? add event listner to the parent element
+
+document.querySelectorAll('.nav__links').forEach(links => {
+  links.addEventListener('click', function (e) {
+    //? Prevent the scroll to the href from the a tag
+    e.preventDefault();
+
+    console.log(e.target);
+    if (e.target.classList.contains('nav__link')) {
+
+      const id = e.target.getAttribute('href');
+
+      const sectionName = document
+        .querySelector(`${id}`)
+        .scrollIntoView({ behavior: 'smooth' });
+    }
+
+  });
 });

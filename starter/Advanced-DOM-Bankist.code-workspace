@@ -5,6 +5,12 @@
 		},
 		{
 			"path": "../../practiceJs"
+		},
+		{
+			"path": "../../Beehivve"
 		}
-	]
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Advanced-DOM-Bankist"
+	}
 }
