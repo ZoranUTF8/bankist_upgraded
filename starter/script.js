@@ -1,5 +1,9 @@
 'use strict';
 
+const navigationBar = document.querySelector('.nav');
+const operations__tabs__button__container = document.querySelector(
+  '.operations__tab-container'
+);
 ///////////////////////////////////////
 // Modal window
 
@@ -61,7 +65,7 @@ btnScrollTo.addEventListener('click', e => {
 });
 
 //! Smooth scrolling for nav links
-//? add event listner to the parent element
+//? add event listener to the parent element
 
 document.querySelectorAll('.nav__links').forEach(links => {
   links.addEventListener('click', function (e) {
@@ -80,9 +84,7 @@ document.querySelectorAll('.nav__links').forEach(links => {
 
 //! Tabbed component
 //? Get requred elements
-const operations__tabs__button__container = document.querySelector(
-  '.operations__tab-container'
-);
+
 const tabs__buttons = document.querySelectorAll('.operations__tab');
 
 const tabs__content = document.querySelectorAll('.operations__content');
@@ -109,3 +111,31 @@ operations__tabs__button__container.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clickedBtn.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+//! Add links fadeout
+
+const fadeoutLink = function (e, opacityAmount) {
+  //? this is now opacity amount as we used bind
+  // ? Get the clicked btn
+
+  if (e.target.classList.contains('nav__link')) {
+    const clickedNavBtn = e.target;
+    const logo = clickedNavBtn.closest('.nav').querySelector('img');
+
+    // ? Get other siblings
+    const otherSiblings = clickedNavBtn
+      .closest('.nav')
+      .querySelectorAll('.nav__link');
+
+    //? Hide the other siblings
+    otherSiblings.forEach(sibling => {
+      if (sibling !== clickedNavBtn) {
+        sibling.style.opacity = this;
+      }
+    });
+    logo.style.opacity = this;
+  }
+};
+navigationBar.addEventListener('mouseover', fadeoutLink.bind(0.5));
+
+navigationBar.addEventListener('mouseout', fadeoutLink.bind(1));
