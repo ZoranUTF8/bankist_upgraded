@@ -31,7 +31,7 @@ overlay.addEventListener('click', closeModal);
 //   }
 // });
 
-//? Create a we use cookies message and display it
+//! Create a we use cookies message and display it
 const message = document.createElement('div');
 
 message.classList.add('cookie-message');
@@ -51,7 +51,7 @@ document
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%';
 
-//? Smooth scroling
+//! Smooth scroling for fast access
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
@@ -60,7 +60,7 @@ btnScrollTo.addEventListener('click', e => {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-//? Smooth scrolling for nav links
+//! Smooth scrolling for nav links
 //? add event listner to the parent element
 
 document.querySelectorAll('.nav__links').forEach(links => {
@@ -68,15 +68,44 @@ document.querySelectorAll('.nav__links').forEach(links => {
     //? Prevent the scroll to the href from the a tag
     e.preventDefault();
 
-    console.log(e.target);
     if (e.target.classList.contains('nav__link')) {
-
       const id = e.target.getAttribute('href');
 
       const sectionName = document
         .querySelector(`${id}`)
         .scrollIntoView({ behavior: 'smooth' });
     }
-
   });
+});
+
+//! Tabbed component
+//? Get requred elements
+const operations__tabs__button__container = document.querySelector(
+  '.operations__tab-container'
+);
+const tabs__buttons = document.querySelectorAll('.operations__tab');
+
+const tabs__content = document.querySelectorAll('.operations__content');
+
+//? Add event listnere to the clicked tab button
+operations__tabs__button__container.addEventListener('click', function (e) {
+  // ? Get the clicked btn
+  const clickedBtn = e.target.closest('.operations__tab');
+
+  // ? Guard clause if clicked outside the btn container
+  if (!clickedBtn) return;
+
+  //? Remove the operations__tab--active class first
+  tabs__buttons.forEach(btn => btn.classList.remove('operations__tab--active'));
+  //? Add the new operations__tab--active to the new active
+  clickedBtn.classList.add('operations__tab--active');
+
+  //? Remove the operations__content--active class first
+  tabs__content.forEach(activeContent =>
+    activeContent.classList.remove('operations__content--active')
+  );
+  // ? Get the content element and add the new operations__content--active to the new active
+  document
+    .querySelector(`.operations__content--${clickedBtn.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
