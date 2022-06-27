@@ -114,7 +114,7 @@ operations__tabs__button__container.addEventListener('click', function (e) {
 
 //! Add links fadeout
 
-const fadeoutLink = function (e, opacityAmount) {
+const fadeoutLink = function (e) {
   //? this is now opacity amount as we used bind
   // ? Get the clicked btn
 
@@ -137,5 +137,4 @@ const fadeoutLink = function (e, opacityAmount) {
   }
 };
 navigationBar.addEventListener('mouseover', fadeoutLink.bind(0.5));
-
 navigationBar.addEventListener('mouseout', fadeoutLink.bind(1));
