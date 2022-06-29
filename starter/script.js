@@ -11,6 +11,14 @@ const allSections = document.querySelectorAll('.section');
 
 const allSectionImages = document.querySelectorAll('img[data-src');
 
+const sliderContainer = document.querySelector('.slider');
+
+const allSlides = document.querySelectorAll('.slide');
+
+const sliderBtnRight = document.querySelector('.slider__btn--right');
+
+const sliderBtnLeft = document.querySelector('.slider__btn--left');
+
 // ! LOGIC
 
 //! Modal window
@@ -176,7 +184,6 @@ headerObs.observe(header);
 
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
   if (entry.isIntersecting) {
     entry.target.classList.remove('section--hidden');
     sectionObserver.unobserve(entry.target);
@@ -193,7 +200,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 //? Add section hidden and the observer to each section
 allSections.forEach(section => {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
 });
 
 //! Lazy loading images
@@ -220,3 +227,32 @@ const imageObserver = new IntersectionObserver(revealImage, {
 allSectionImages.forEach(sectionImage => {
   imageObserver.observe(sectionImage);
 });
+
+//! Add image carousel
+
+let currentSlide = 0;
+
+function changeSlide(slidePos) {
+  allSlides.forEach((slide, indx) => {
+    slide.style.transform = `translateX(${100 * (indx - slidePos)}%)`;
+  });
+}
+//? Set starting slide
+changeSlide(0);
+
+function nextSlide() {
+  currentSlide++;
+
+  if (currentSlide > allSlides.length - 1) currentSlide = 0;
+  changeSlide(currentSlide);
+}
+function prevSlide() {
+  currentSlide--;
+
+  if (currentSlide < 0) currentSlide = allSlides.length - 1;
+  changeSlide(currentSlide);
+}
+
+sliderBtnRight.addEventListener('click', nextSlide);
+
+sliderBtnLeft.addEventListener('click', prevSlide);
