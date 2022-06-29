@@ -4,7 +4,10 @@ const navigationBar = document.querySelector('.nav');
 const operations__tabs__button__container = document.querySelector(
   '.operations__tab-container'
 );
-const header = document.querySelector('.header'); ///////////////////////////////////////
+const header = document.querySelector('.header');
+
+const allSections = document.querySelectorAll('.section');
+
 //! Modal window
 
 const modal = document.querySelector('.modal');
@@ -146,7 +149,7 @@ const navHeight = navigationBar.getBoundingClientRect().height;
 const stickyNav = function (entries, observer) {
   const [IntersectionObserverEntry] = entries;
   const { isIntersecting } = IntersectionObserverEntry;
-  console.log(isIntersecting);
+
   if (!isIntersecting) {
     navigationBar.classList.add('sticky');
   } else {
@@ -163,3 +166,30 @@ const stickyNavObsOptions = {
 
 const headerObs = new IntersectionObserver(stickyNav, stickyNavObsOptions);
 headerObs.observe(header);
+
+// ! Revealing section elements on scroll
+// ? removes opacity of zero and moves elementss a bit down
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+  if (entry.isIntersecting) {
+    entry.target.classList.remove('section--hidden');
+    sectionObserver.unobserve(entry.target);
+  } else {
+    return;
+  }
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+//? Add section hidden and the observer to each section
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+
+//! Lazy loading images
