@@ -4,8 +4,8 @@ const navigationBar = document.querySelector('.nav');
 const operations__tabs__button__container = document.querySelector(
   '.operations__tab-container'
 );
-///////////////////////////////////////
-// Modal window
+const header = document.querySelector('.header'); ///////////////////////////////////////
+//! Modal window
 
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
@@ -36,24 +36,24 @@ overlay.addEventListener('click', closeModal);
 // });
 
 //! Create a we use cookies message and display it
+//? Create our element
 const message = document.createElement('div');
-
+//? Add a css class to our element
 message.classList.add('cookie-message');
-
+//? Set the inner html of our element
 message.innerHTML =
   '<h3>We use cookies on our page.</h3> <button class="btn btn--close-cookie">Ok</button>';
 
-const header = document.querySelector('.header');
-
+//? Add the element to the header element before all
 header.before(message);
-
+//? add on click to the close cookie btn
 document
   .querySelector('.btn--close-cookie')
   .addEventListener('click', () => message.remove());
 
 //? Add custom css styles to our message div
 message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
+message.style.width = '100%';
 
 //! Smooth scroling for fast access
 
@@ -116,8 +116,8 @@ operations__tabs__button__container.addEventListener('click', function (e) {
 
 const fadeoutLink = function (e) {
   //? this is now opacity amount as we used bind
-  // ? Get the clicked btn
 
+  // ? Get the clicked btn as the function is now binded to the element
   if (e.target.classList.contains('nav__link')) {
     const clickedNavBtn = e.target;
     const logo = clickedNavBtn.closest('.nav').querySelector('img');
@@ -138,3 +138,28 @@ const fadeoutLink = function (e) {
 };
 navigationBar.addEventListener('mouseover', fadeoutLink.bind(0.5));
 navigationBar.addEventListener('mouseout', fadeoutLink.bind(1));
+
+//! Sticky navigation
+//? Get dinamicaly the size of the nav
+const navHeight = navigationBar.getBoundingClientRect().height;
+
+const stickyNav = function (entries, observer) {
+  const [IntersectionObserverEntry] = entries;
+  const { isIntersecting } = IntersectionObserverEntry;
+  console.log(isIntersecting);
+  if (!isIntersecting) {
+    navigationBar.classList.add('sticky');
+  } else {
+    navigationBar.classList.remove('sticky');
+  }
+};
+const stickyNavObsOptions = {
+  // ? root is the viewport
+  root: null,
+  threshold: 0,
+  //? Add 90 pixels more to the header whihc is the height of the navigation
+  rootMargin: `-${navHeight}px`,
+};
+
+const headerObs = new IntersectionObserver(stickyNav, stickyNavObsOptions);
+headerObs.observe(header);
