@@ -1,6 +1,7 @@
 'use strict';
 
 const navigationBar = document.querySelector('.nav');
+
 const operations__tabs__button__container = document.querySelector(
   '.operations__tab-container'
 );
@@ -8,8 +9,11 @@ const header = document.querySelector('.header');
 
 const allSections = document.querySelectorAll('.section');
 
-//! Modal window
+const allSectionImages = document.querySelectorAll('img[data-src');
 
+// ! LOGIC
+
+//! Modal window
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
@@ -58,7 +62,7 @@ document
 message.style.backgroundColor = '#37383d';
 message.style.width = '100%';
 
-//! Smooth scroling for fast access
+//! Smooth scroling
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
@@ -193,3 +197,26 @@ allSections.forEach(section => {
 });
 
 //! Lazy loading images
+const revealImage = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener('load', () =>
+    entry.target.classList.remove('lazy-img')
+  );
+  imageObserver.unobserve(entry.target);
+};
+
+const imageObserver = new IntersectionObserver(revealImage, {
+  root: null,
+  threshold: 0,
+  rootMargin: '-300px',
+});
+
+//? Add section hidden and the observer to each section
+allSectionImages.forEach(sectionImage => {
+  imageObserver.observe(sectionImage);
+});
