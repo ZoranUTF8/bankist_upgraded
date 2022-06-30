@@ -19,6 +19,8 @@ const sliderBtnRight = document.querySelector('.slider__btn--right');
 
 const sliderBtnLeft = document.querySelector('.slider__btn--left');
 
+const sliderDots = document.querySelector('.dots');
+
 // ! LOGIC
 
 //! Modal window
@@ -229,30 +231,90 @@ allSectionImages.forEach(sectionImage => {
 });
 
 //! Add image carousel
+const slider = function () {
+  let currentSlide = 0;
 
-let currentSlide = 0;
+  function changeSlide(slidePos) {
+    allSlides.forEach((slide, indx) => {
+      slide.style.transform = `translateX(${100 * (indx - slidePos)}%)`;
+    });
+    // setActiveDot(currentSlide);
+  }
 
-function changeSlide(slidePos) {
-  allSlides.forEach((slide, indx) => {
-    slide.style.transform = `translateX(${100 * (indx - slidePos)}%)`;
+  function nextSlide() {
+    currentSlide++;
+
+    if (currentSlide > allSlides.length - 1) currentSlide = 0;
+
+    changeSlide(currentSlide);
+    setActiveDot(currentSlide);
+  }
+  function prevSlide() {
+    currentSlide--;
+
+    if (currentSlide < 0) currentSlide = allSlides.length - 1;
+
+    changeSlide(currentSlide);
+    setActiveDot(currentSlide);
+  }
+
+  sliderBtnRight.addEventListener('click', nextSlide);
+
+  sliderBtnLeft.addEventListener('click', prevSlide);
+
+  // ! Add carousel slide change on keydown
+
+  document.addEventListener('keydown', e => {
+    switch (e.code) {
+      case 'ArrowLeft':
+        prevSlide();
+        break;
+      case 'ArrowRight':
+        nextSlide();
+        break;
+      default:
+        break;
+    }
   });
-}
-//? Set starting slide
-changeSlide(0);
+  //! Add dots under the slides
 
-function nextSlide() {
-  currentSlide++;
+  //? Create and display the dots
+  function createDots() {
+    allSlides.forEach((_, indx) => {
+      sliderDots.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${indx}"></button>`
+      );
+    });
+  }
 
-  if (currentSlide > allSlides.length - 1) currentSlide = 0;
-  changeSlide(currentSlide);
-}
-function prevSlide() {
-  currentSlide--;
+  sliderDots.addEventListener('click', e => {
+    if (e.target.classList.contains('dots__dot')) {
+      const { slide } = e.target.dataset;
+      setActiveDot(slide);
+      changeSlide(slide);
+    }
+  });
 
-  if (currentSlide < 0) currentSlide = allSlides.length - 1;
-  changeSlide(currentSlide);
-}
+  function setActiveDot(slide) {
+    const allDots = document.querySelectorAll('.dots__dot');
+    //? Remove the dots__dot--active class first
+    allDots.forEach(dot => dot.classList.remove('dots__dot--active'));
 
-sliderBtnRight.addEventListener('click', nextSlide);
+    //? Picked the clikded button
+    const clickedDot = document.querySelector(
+      `.dots__dot[data-slide="${slide}"]`
+    );
 
-sliderBtnLeft.addEventListener('click', prevSlide);
+    clickedDot.classList.add('dots__dot--active');
+  }
+  //! init slider function
+  function initSlider() {
+    changeSlide(0);
+    createDots();
+    setActiveDot(currentSlide);
+  }
+  initSlider();
+};
+
+slider();
