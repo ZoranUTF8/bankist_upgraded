@@ -318,3 +318,4 @@ const slider = function () {
 };
 
 slider();
+

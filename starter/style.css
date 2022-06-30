@@ -77,6 +77,18 @@ body {
   cursor: pointer;
   transition: all 0.3s;
 }
+.btn--close-cookie{
+  display: inline-block;
+  background-color: var(--color-primary);
+  font-size: 1.6rem;
+  font-family: inherit;
+  font-weight: 500;
+  border: none;
+  padding: 1rem 1rem;
+  border-radius: 10rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
 .btn:hover {
   background-color: var(--color-primary-darker);
